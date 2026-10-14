@@ -1,6 +1,7 @@
 package Api;
 
 import io.restassured.common.mapper.TypeRef;
+import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -15,16 +16,15 @@ public class ProjectApiTest extends  BaseApiTest {
 
         List<ProjectDto> projects =
                 given()
+                        .spec(ApiSpecifications.baseRequestSpec())
                         .header("Authorization", "Bearer " + getToken())
-                        .header("Accept", "application/json")
                         .queryParam("fields", "id,name,shortName")
                         .when()
-                        .get("/api/admin/projects")
+                        .get(ProjectEndpoints.PROJECTS)
                         .then()
-                        .statusCode(200)
+                        .spec(ApiSpecifications.successResponseSpec())
                         .extract()
-                        .as(new TypeRef<List<ProjectDto>>() {
-                        });
+                        .as(new TypeRef<List<ProjectDto>>() {});
 
         assertNotNull(projects, "Projects list should not be null");
 

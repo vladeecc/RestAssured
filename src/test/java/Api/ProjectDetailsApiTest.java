@@ -1,38 +1,46 @@
 package Api;
 
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.emptyOrNullString;
 
 public class ProjectDetailsApiTest extends BaseApiTest {
 
     @Test
     void shouldGetProjectDetails() {
-        String projectId =
+        Response response =
                 given()
-                        .header("Authorization", "Bearer " + getToken())
-                        .header("Accept", "application/json")
+                        .spec(ApiSpecifications.baseRequestSpec())
                         .queryParam("fields", "id,name,shortName")
                         .when()
-                        .get("/api/admin/projects")
+                        .get(ProjectEndpoints.PROJECTS)
                         .then()
-                        .statusCode(200)
-                        .extract()
-                        .jsonPath()
-                        .getString("[0].id");
-        assert projectId != null && !projectId.isBlank()
-                : "Project ID should not be empty";
+                        .spec(ApiSpecifications.successResponseSpec())
+                .extract()
+                .response();
+
+        String projectId = response.jsonPath().getString("[0].id");
+
+        assertNotNull(projectId, "Project ID should not be null");
+        assertFalse(projectId.isBlank(), "Project ID should not be empty");
 
         given()
+                .spec(ApiSpecifications.baseRequestSpec())
                 .header("Authorization", "Bearer " + getToken())
-                .header("Accept", "application/json")
                 .queryParam("fields", "id,name,shortName")
                 .when()
-                .get("/api/admin/projects/" + projectId)
+                .get(ProjectEndpoints.projectById(projectId))
                 .then()
-                .statusCode(200)
+                .spec(ApiSpecifications.successResponseSpec())
                 .body("id", equalTo(projectId))
                 .body("name", not(emptyOrNullString()));
+
+        System.out.println("PASS: shouldGetProjectDetails");
     }
 }

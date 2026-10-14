@@ -8,24 +8,29 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.emptyOrNullString;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-public class ProjectCSVTest extends BaseApiTest {
+class ProjectCsvTest extends BaseApiTest {
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/projects.csv",  numLinesToSkip = 1)
-    void projectDataShouldBeValid(String id, String name, String shortname) {
+    @CsvFileSource(
+            resources = "/projects.csv",
+            numLinesToSkip = 1
+    )
+    void projectShouldMatchCsvData(
+            String id,
+            String name,
+            String shortName) {
+
         given()
+                .spec(ApiSpecifications.baseRequestSpec())
                 .header("Authorization", "Bearer " + getToken())
-                .header("Accept", "application/json")
                 .queryParam("fields", "id,name,shortName")
                 .when()
-                .get("/api/admin/projects/" + id)
+                .get(ProjectEndpoints.projectById(id))
                 .then()
-                .statusCode(200)
+                .spec(ApiSpecifications.successResponseSpec())
                 .body("id", equalTo(id))
                 .body("name", equalTo(name))
-                .body("shortName", equalTo(shortname))
+                .body("shortName", equalTo(shortName))
                 .body("name", not(emptyOrNullString()));
 
         System.out.println("PASS: " + name);
