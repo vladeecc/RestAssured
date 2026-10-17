@@ -1,4 +1,4 @@
-package Api;
+package Api.DTO;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

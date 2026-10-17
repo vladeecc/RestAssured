@@ -1,9 +1,9 @@
-package Api;
+package Api.Tests;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 
-public class BaseApiTest {
+public class BaseTest {
     @BeforeAll
     static void setup() {
         RestAssured.baseURI = "http://localhost:8080";

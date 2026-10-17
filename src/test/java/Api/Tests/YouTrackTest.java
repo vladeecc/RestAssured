@@ -1,4 +1,4 @@
-package Api;
+package Api.Tests;
 
 import org.junit.jupiter.api.Test;
 
@@ -6,7 +6,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.notNullValue;
 
 
-public class YouTrackTest extends BaseApiTest {
+public class YouTrackTest extends BaseTest {
 
     @Test
     void youTrackOpen() {

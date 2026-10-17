@@ -1,14 +1,16 @@
-package Api;
+package Api.Tests;
 
+import Api.Specifications.ApiSpecifications;
+import Api.DTO.ProjectDto;
+import Api.Endpoints.ProjectEndpoints;
 import io.restassured.common.mapper.TypeRef;
-import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
-public class ProjectApiTest extends  BaseApiTest {
+public class ProjectTest extends BaseTest {
 
     @Test
     void shouldGetProjects() {
@@ -16,9 +18,7 @@ public class ProjectApiTest extends  BaseApiTest {
 
         List<ProjectDto> projects =
                 given()
-                        .spec(ApiSpecifications.baseRequestSpec())
-                        .header("Authorization", "Bearer " + getToken())
-                        .queryParam("fields", "id,name,shortName")
+                        .spec(ApiSpecifications.baseAuthorization(getToken()))
                         .when()
                         .get(ProjectEndpoints.PROJECTS)
                         .then()

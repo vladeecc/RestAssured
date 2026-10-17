@@ -1,4 +1,4 @@
-package Api;
+package Api.Tests;
 
 
 import org.junit.jupiter.api.Test;
@@ -8,7 +8,7 @@ import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.is;
 
 
-public class NegativeApiTest extends BaseApiTest {
+public class NegativeTest extends BaseTest {
 
     @Test
     void shouldRejectRequestWithoutToken() {

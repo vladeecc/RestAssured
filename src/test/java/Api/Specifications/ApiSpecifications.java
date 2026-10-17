@@ -1,4 +1,4 @@
-package Api;
+package Api.Specifications;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
@@ -22,6 +22,15 @@ public class ApiSpecifications {
         return new ResponseSpecBuilder()
                 .expectStatusCode(200)
                 .expectContentType(ContentType.JSON)
+                .build();
+    }
+
+    public static RequestSpecification baseAuthorization(String token) {
+        return new RequestSpecBuilder()
+                .setBaseUri("http://localhost:8080")
+                .addHeader("Authorization", "Bearer" + token.trim())
+                .addHeader("Accept", "application/json")
+                .addQueryParam("fields", "id,name,shortName")
                 .build();
     }
 }

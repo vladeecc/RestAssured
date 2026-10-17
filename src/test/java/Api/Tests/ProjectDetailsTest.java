@@ -1,5 +1,7 @@
-package Api;
+package Api.Tests;
 
+import Api.Specifications.ApiSpecifications;
+import Api.Endpoints.ProjectEndpoints;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +12,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.emptyOrNullString;
 
-public class ProjectDetailsApiTest extends BaseApiTest {
+public class ProjectDetailsTest extends BaseTest {
 
     @Test
     void shouldGetProjectDetails() {
@@ -31,9 +33,7 @@ public class ProjectDetailsApiTest extends BaseApiTest {
         assertFalse(projectId.isBlank(), "Project ID should not be empty");
 
         given()
-                .spec(ApiSpecifications.baseRequestSpec())
-                .header("Authorization", "Bearer " + getToken())
-                .queryParam("fields", "id,name,shortName")
+                .spec(ApiSpecifications.baseAuthorization(getToken()))
                 .when()
                 .get(ProjectEndpoints.projectById(projectId))
                 .then()

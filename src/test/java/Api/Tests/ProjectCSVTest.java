@@ -1,5 +1,7 @@
-package Api;
+package Api.Tests;
 
+import Api.Specifications.ApiSpecifications;
+import Api.Endpoints.ProjectEndpoints;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
@@ -8,7 +10,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.emptyOrNullString;
 
-class ProjectCsvTest extends BaseApiTest {
+class ProjectCsvTest extends BaseTest {
 
     @ParameterizedTest
     @CsvFileSource(
@@ -21,9 +23,7 @@ class ProjectCsvTest extends BaseApiTest {
             String shortName) {
 
         given()
-                .spec(ApiSpecifications.baseRequestSpec())
-                .header("Authorization", "Bearer " + getToken())
-                .queryParam("fields", "id,name,shortName")
+                .spec(ApiSpecifications.baseAuthorization(getToken()))
                 .when()
                 .get(ProjectEndpoints.projectById(id))
                 .then()

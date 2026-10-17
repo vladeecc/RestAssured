@@ -1,4 +1,4 @@
-package Api;
+package Api.Endpoints;
 
 public final class ProjectEndpoints {
     private ProjectEndpoints() {
